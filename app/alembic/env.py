@@ -7,9 +7,9 @@ from sqlalchemy.ext.asyncio import async_engine_from_config
 
 from alembic import context
 
-from config import DB_HOST, DB_USER, DB_NAME, DB_PASS
+from config import DB_HOST, DB_USER, DB_NAME, DB_PASS, DB_PORT
 from models import database
-from models.models import *
+from models import *
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -17,6 +17,7 @@ config = context.config
 
 section = config.config_ini_section
 config.set_section_option(section, "DB_HOST", DB_HOST)
+config.set_section_option(section, "DB_PORT", DB_PORT)
 config.set_section_option(section, "DB_USER", DB_USER)
 config.set_section_option(section, "DB_NAME", DB_NAME)
 config.set_section_option(section, "DB_PASS", DB_PASS)

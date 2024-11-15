@@ -1,13 +1,13 @@
 from fastapi import FastAPI
 
-from routers import bond_endpoints
-
+from routers import bond_endpoints, update_endpoints
 
 app = FastAPI(
     title="MOEX data service"
 )
 
 app.include_router(bond_endpoints.router)
+app.include_router(update_endpoints.router)
 
 
 @app.get("/")
