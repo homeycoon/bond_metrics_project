@@ -3,7 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from models import crud
 from models.database import get_db
-from services.loading_to_db import load_currency_to_db, load_bonds_to_db
+from utils.loading_to_db import load_currency_to_db, load_bonds_to_db
 
 router = APIRouter(
     prefix="/update",

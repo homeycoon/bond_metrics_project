@@ -8,6 +8,7 @@ from sqlalchemy.orm import Mapped, mapped_column
 from .database import Base
 
 
+# Модель данных облигаций
 class Bond(Base):
     __tablename__ = "bonds"
 
@@ -68,6 +69,7 @@ class Bond(Base):
     loading_date: Mapped[datetime] = mapped_column(DateTime)  # loading date
 
 
+# Модель данных валют
 class Currency(Base):
     __tablename__ = "currencies"
 
