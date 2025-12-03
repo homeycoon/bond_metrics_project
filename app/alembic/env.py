@@ -9,7 +9,7 @@ from alembic import context
 
 from config import DB_HOST, DB_USER, DB_NAME, DB_PASS, DB_PORT
 from models import database
-from models import *
+from models.models import *
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -81,6 +81,7 @@ async def run_async_migrations() -> None:
         prefix="sqlalchemy.",
         poolclass=pool.NullPool,
     )
+
 
     async with connectable.connect() as connection:
         await connection.run_sync(do_run_migrations)

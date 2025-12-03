@@ -2,7 +2,7 @@ venv/
 .idea
 __pycache__/
 __mypy__/
-.env
+app/.env
 .env.docker
 .env.db
 logs/

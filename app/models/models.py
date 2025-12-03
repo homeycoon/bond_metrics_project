@@ -2,7 +2,7 @@ from datetime import datetime
 from decimal import Decimal
 
 from sqlalchemy import (Integer, String, DateTime,
-                        DECIMAL, BigInteger)
+                        DECIMAL, BigInteger, Boolean)
 from sqlalchemy.orm import Mapped, mapped_column
 
 from .database import Base
@@ -86,4 +86,38 @@ class Currency(Base):
     )
     curs: Mapped[Decimal] = mapped_column(
         DECIMAL(precision=10, scale=2)
+    )
+
+
+# Модель данных пользователей
+class Users(Base):
+    __tablename__ = "users"
+
+    id: Mapped[int] = mapped_column(
+        Integer,
+        primary_key=True,
+        autoincrement=True,
+        index=True
+    )
+    username: Mapped[str] = mapped_column(
+        String,
+        unique=True
+    )
+    first_name: Mapped[str] = mapped_column(
+        String
+    )
+    last_name: Mapped[str] = mapped_column(
+        String,
+        nullable=True
+    )
+    patronymic_name: Mapped[str] = mapped_column(
+        String,
+        nullable=True
+    )
+    hashed_password: Mapped[str] = mapped_column(
+        String
+    )
+    disabled: Mapped[bool] = mapped_column(
+        Boolean,
+        nullable=True
     )

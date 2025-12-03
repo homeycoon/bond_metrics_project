@@ -1,8 +1,9 @@
-from typing import Sequence
+from typing import Sequence, Annotated
 
 from fastapi import APIRouter, Depends, Query, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from auth.auth import get_current_active_user
 from models import schemas, crud
 from models.database import get_db
 from models.models import Bond
@@ -21,7 +22,10 @@ router = APIRouter(
 @router.get("/",
             response_model=list[schemas.TickerBase],
             name="Получение тикеров и названий всех облигаций")
-async def get_all_bonds(db: AsyncSession = Depends(get_db)) -> Sequence[Bond]:
+async def get_all_bonds(
+        current_user: Annotated[schemas.User, Depends(get_current_active_user)],
+        db: AsyncSession = Depends(get_db)
+) -> Sequence[Bond]:
     bonds = await crud.get_bonds(db=db)
     return bonds
 
@@ -31,6 +35,7 @@ async def get_all_bonds(db: AsyncSession = Depends(get_db)) -> Sequence[Bond]:
             response_model=schemas.BondInfo,
             name="Получение инфо об облигации по ее тикеру")
 async def get_bond_info(
+        current_user: Annotated[schemas.User, Depends(get_current_active_user)],
         ticker: str,
         db: AsyncSession = Depends(get_db)
 ) -> Bond:
@@ -47,6 +52,7 @@ async def get_bond_info(
             response_model=schemas.BondMetrics,
             name="Получение рассчитанных метрик облигации по ее тикеру")
 async def get_bond_metrics(
+        current_user: Annotated[schemas.User, Depends(get_current_active_user)],
         ticker: str,
         r: float = Query(..., gt=1, lt=50,
                          description="Ставка дисконтирования/желаемая доходность (в процентах)",
@@ -62,6 +68,7 @@ async def get_bond_metrics(
     Потому все расчеты основаны на допущении, что размер купона и частота
     его выплаты остаются неизменными до погашения облигации.
 
+    :param current_user: проверка на доступ конкретного пользователя
     :param ticker: тикер облигации
     :param r: ставка дисконтирования (в процентах)
     :param db: объект подключения к БД
@@ -126,6 +133,7 @@ async def get_bond_metrics(
             response_model=schemas.BondsCorrelation,
             name="Получение корреляции между облигациями")
 async def get_bonds_corr(
+        current_user: Annotated[schemas.User, Depends(get_current_active_user)],
         ticker_1: str = Query(..., description="Тикер первой облигации"),
         ticker_2: str = Query(..., description="Тикер второй облигации"),
         db: AsyncSession = Depends(get_db)
@@ -136,6 +144,7 @@ async def get_bonds_corr(
     проверок на нормальность и на наличие выбросов формулируется рекомендация о том,
     на какой из коэффициентов лучше ориентироваться в данной паре облигаций.
 
+    :param current_user: проверка на доступ конкретного пользователя
     :param ticker_1: тикер первой облигации
     :param ticker_2: тикер второй облигации
     :param db: объект подключения к БД

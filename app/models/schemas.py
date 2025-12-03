@@ -60,3 +60,37 @@ class BondsCorrelation(BaseModel):
     )
     def round_float(cls, v: float):
         return round(v, 8)
+
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+
+class TokenData(BaseModel):
+    username: str | None = None
+
+
+class UserBase(BaseModel):
+    username: str
+    first_name: str
+    last_name: str | None = None
+    patronymic_name: str | None = None
+
+
+class UserToDB(UserBase):
+    hashed_password: str
+    disabled: bool = False
+
+
+class User(UserBase):
+    id: int
+    disabled: bool = False
+
+
+class UserInDB(User):
+    hashed_password: str
+
+
+class UserRegister(UserBase):
+    password: str
