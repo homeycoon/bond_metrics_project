@@ -78,19 +78,14 @@ class UserBase(BaseModel):
     patronymic_name: str | None = None
 
 
+class UserRegister(UserBase):
+    password: str
+
+
 class UserToDB(UserBase):
     hashed_password: str
     disabled: bool = False
 
 
-class User(UserBase):
+class UserInDB(UserToDB):
     id: int
-    disabled: bool = False
-
-
-class UserInDB(User):
-    hashed_password: str
-
-
-class UserRegister(UserBase):
-    password: str

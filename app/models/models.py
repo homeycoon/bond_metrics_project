@@ -97,7 +97,8 @@ class Users(Base):
         Integer,
         primary_key=True,
         autoincrement=True,
-        index=True
+        index=True,
+        unique=True
     )
     username: Mapped[str] = mapped_column(
         String,
@@ -118,6 +119,5 @@ class Users(Base):
         String
     )
     disabled: Mapped[bool] = mapped_column(
-        Boolean,
-        nullable=True
+        Boolean
     )

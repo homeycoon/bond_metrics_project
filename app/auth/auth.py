@@ -5,20 +5,15 @@ import jwt
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from jwt.exceptions import InvalidTokenError
-from pwdlib import PasswordHash
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from config import SECRET_KEY, ALGORITHM
 from models import crud, schemas
 from models.database import get_db
+from utils.hash_utils import verify_password
 
-password_hash = PasswordHash.recommended()
 
 oath2_scheme = OAuth2PasswordBearer(tokenUrl="auth/token")
-
-
-def verify_password(plain_password, hashed_password):
-    return password_hash.verify(plain_password, hashed_password)
 
 
 async def authenticate_user(
@@ -90,8 +85,8 @@ async def get_current_user(
 
 
 async def get_current_active_user(
-        current_user: Annotated[schemas.User, Depends(get_current_user)]
-) -> schemas.User:
+        current_user: Annotated[schemas.UserInDB, Depends(get_current_user)]
+) -> schemas.UserInDB:
     if current_user.disabled:
         raise HTTPException(status_code=400, detail="Inactive user")
     return current_user

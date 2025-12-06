@@ -9,7 +9,7 @@ from auth.auth import authenticate_user, create_access_token
 from config import ACCESS_TOKEN_EXPIRE_MINUTES
 from models import schemas, crud
 from models.database import get_db
-from utils.creating_hash import get_password_hash
+from utils.hash_utils import get_password_hash
 
 router = APIRouter(
     prefix="/auth",
