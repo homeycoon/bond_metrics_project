@@ -13,7 +13,7 @@ default_args = {
 @dag(default_args=default_args, schedule_interval="0 5 * * *", catchup=False)
 def load_data_airflow():
     """
-    Даг для загрузки первичной информации
+    Даг для загрузки информации
     по облигациям и валютам
 
     :return: None
@@ -21,7 +21,7 @@ def load_data_airflow():
     @task()
     def load_currency():
         """
-        Task для загрузки первичных данных по валютам
+        Task для загрузки данных по валютам
 
         :return: None
         """
@@ -34,7 +34,7 @@ def load_data_airflow():
     @task()
     def load_bonds():
         """
-        Task для загрузки первичных данных по облигациям
+        Task для загрузки данных по облигациям
 
         :return: None
         """
@@ -46,3 +46,4 @@ def load_data_airflow():
 
 
 load_data_airflow = load_data_airflow()
+
